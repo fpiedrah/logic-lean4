@@ -70,3 +70,26 @@ example (P : α → Prop) (Q : Prop) :
       { obtain ⟨_, q⟩ := p_x_and_q
         exact q }
     } }
+
+example (P : α → Prop) :
+        ¬ (∀ x, P x) ↔ ∃ x, ¬ P x := by
+  constructor
+  { intro not_foal_x_p_x
+    cases Classical.em (∃ x, ¬P x) with
+    | inr hyp_1 => {
+      exfalso
+      apply not_foal_x_p_x
+      intro x
+      cases Classical.em (P x) with
+      | inr hyp_2 => { exfalso
+                       apply hyp_1
+                       exists x }
+      | inl hyp_2 => { exact hyp_2 } }
+    | inl hyp => { exact hyp } }
+  { intro exis_x_not_p_x
+    intro foal_x_p_x
+    cases exis_x_not_p_x with
+    | intro x not_p_x => {
+      apply not_p_x
+      specialize foal_x_p_x x
+      exact foal_x_p_x } }

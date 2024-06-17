@@ -1,3 +1,7 @@
+import Mathlib.Init.Data.Nat.Notation
+import Mathlib.Data.Real.Basic
+
+
 example {P Q : Prop} (hypothesis : P ∧ Q) : P ∨ Q := by
   obtain ⟨p, _⟩ := hypothesis
   left
@@ -106,9 +110,30 @@ example (P : Prop) :
   { intro not_not_p
     by_cases hyp: P
     { exact hyp }
-    { contradiction }
-  }
+    { contradiction } }
   { intro p
     intro not_p
     apply not_p
+    exact p }
+
+example (P Q : Prop) :
+        ¬ (P → Q) ↔ (P ∧ ¬ Q) := by
+  constructor
+  { intro not_p_imp_q
+    constructor
+    { by_cases hyp: P
+      { exact hyp }
+      { exfalso
+        apply not_p_imp_q
+        intro p
+        contradiction } }
+    { intro q
+      apply not_p_imp_q
+      intro _
+      exact q } }
+  { intro p_and_not_q
+    intro p_imp_q
+    obtain ⟨p, not_q⟩ := p_and_not_q
+    apply not_q
+    apply p_imp_q
     exact p }
