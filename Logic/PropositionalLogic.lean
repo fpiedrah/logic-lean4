@@ -1,7 +1,3 @@
-import Mathlib.Init.Data.Nat.Notation
-import Mathlib.Data.Real.Basic
-
-
 example {P Q : Prop}
     (hypothesis : P ∧ Q) :
     P ∨ Q := by
